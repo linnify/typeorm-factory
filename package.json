@@ -28,7 +28,7 @@
     "tests"
   ],
   "homepage": "https://github.com/linnify/typeorm-factory#readme",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "typeorm": "^0.2.31"
   },
