@@ -1,6 +1,6 @@
 {
   "name": "@linnify/typeorm-factory",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Factory for typeorm",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,17 +9,24 @@
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
     "prepublish": "tsc",
-    "prepublishOnly" : "npm run lint",
-    "preversion" : "npm run lint",
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepublishOnly": "npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "author": "Bogdan Darius",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/linnify/typeorm-factory.git"
   },
-  "keywords": ["typeorm", "factory", "testing", "typescript", "factories", "tests"],
+  "keywords": [
+    "typeorm",
+    "factory",
+    "testing",
+    "typescript",
+    "factories",
+    "tests"
+  ],
   "homepage": "https://github.com/linnify/typeorm-factory#readme",
   "license": "MIT",
   "dependencies": {
