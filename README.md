@@ -1,5 +1,9 @@
 # Typeorm Factory
 
+
+[![codecov](https://codecov.io/gh/linnify/typeorm-factory/branch/main/graph/badge.svg)](https://codecov.io/gh/linnify/typeorm-factory)
+[![Build Status](https://travis-ci.com/linnify/typeorm-factory.svg?branch=main)](https://travis-ci.com/linnify/typeorm-factory)
+
 This package makes testing easier by creating factories for your TypeORM entities. It is inspired by the python package [Factory Boy](https://github.com/FactoryBoy/factory_boy).
 
 ## Installation
