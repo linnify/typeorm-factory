@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - 12.3.1
+install:
+  - npm install
+script:
+  - npm run test
+after_success:
+  - npm run codecov
+cache:
+  directories:
+    - "node_modules"
