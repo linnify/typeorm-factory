@@ -1,8 +1,8 @@
-import {getRepository} from 'typeorm';
-import {SubFactory} from './subfactory';
-import {Constructable} from './types';
-import {Sequence} from './sequence';
-import {FactoryStorage} from './factory-storage';
+import { getRepository } from 'typeorm';
+import { SubFactory } from './subfactory';
+import { Constructable } from './types';
+import { Sequence } from './sequence';
+import { FactoryStorage } from './factory-storage';
 
 export abstract class Factory<T> {
   abstract get entity(): Constructable<T>;
