@@ -119,14 +119,29 @@ describe('Test factories',() => {
   })
 
   it('Should call the post generation functions after creating the entity', async () => {
-    const companyFactory: CompanyFactory = await new CompanyFactory();
+    const companyFactory: CompanyFactory = new CompanyFactory();
     const createLogSpy = sinon.spy(companyFactory, 'createLog');
     const callAFunctionSpy = sinon.spy(companyFactory, 'callAFunction')
 
-    await companyFactory.create();
+    const company = await companyFactory.create();
 
     expect(createLogSpy.calledOnce).toBeTruthy();
     expect(callAFunctionSpy.calledOnce).toBeTruthy();
     expect(FactoryStorage.storage.getPostGenerators('CompanyFactory').length).toEqual(2);
+    expect(company.employees.length).toEqual(5);
+  })
+
+  it('Should allow overriding boolean factory default value to false', async () => {
+    const companyFactory: CompanyFactory = new CompanyFactory();
+
+    const createdCompany = await companyFactory.create({active: false});
+
+    expect(createdCompany.active).toEqual(false);
+  })
+
+  it('Should allow changing the subfactory default values', async () => {
+    const user = await new UserFactory().create();
+
+    expect(user.company.name).toEqual('TypeORM Factory');
   })
 });
