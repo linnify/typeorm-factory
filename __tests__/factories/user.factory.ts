@@ -8,7 +8,7 @@ export class UserFactory extends Factory<User> {
   firstName = 'Darius'
   lastName = 'Bogdan'
   email = 'darius.bogdan@linnify.com'
-  company = new SubFactory(CompanyFactory)
+  company = new SubFactory(CompanyFactory, {name: 'TypeORM Factory'})
 
   protected getOrCreate(): string[] {
     return ['email']

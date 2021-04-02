@@ -1,5 +1,6 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Project} from "./Project";
+import {Employee} from "./Employee";
 
 @Entity()
 export class Company {
@@ -18,6 +19,12 @@ export class Company {
   @Column()
   website: string;
 
+  @Column()
+  active: boolean;
+
   @OneToMany(() => Project, (project) => project.company)
   projects: Project[];
+
+  @OneToMany(() => Employee, (employee) => employee.company)
+  employees: Employee[];
 }

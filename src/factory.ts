@@ -1,8 +1,8 @@
-import { getRepository } from 'typeorm';
-import { SubFactory } from './subfactory';
-import { Constructable } from './types';
-import { Sequence } from './sequence';
-import { FactoryStorage } from './factory-storage';
+import {getRepository} from 'typeorm';
+import {SubFactory} from './subfactory';
+import {Constructable} from './types';
+import {Sequence} from './sequence';
+import {FactoryStorage} from './factory-storage';
 
 export abstract class Factory<T> {
   abstract get entity(): Constructable<T>;
@@ -23,7 +23,7 @@ export abstract class Factory<T> {
     const storage = FactoryStorage.storage;
     const postGenerators = storage.getPostGenerators(this.constructor.name);
     if (postGenerators && postGenerators.length !== 0) {
-      postGenerators.forEach((fnName: string) => (this as any)[fnName]());
+      await Promise.all(postGenerators.map(async (fnName: string) => (this as any)[fnName](entity)));
     }
 
     return savedEntity;
@@ -39,23 +39,22 @@ export abstract class Factory<T> {
     return [];
   }
 
-  private async getExistingEntity(values: Partial<T> = {}) {
+  private async getExistingEntity(values: Partial<T>) {
     const whereClauses: { [key: string]: any } = {};
 
     this.getOrCreate().forEach((key) => {
-      const _value = values[key as keyof T] ? values[key as keyof T] : (this as any)[key];
-      whereClauses[key] = _value;
+      whereClauses[key] = values[key as keyof T] ? values[key as keyof T] : (this as any)[key];
     });
 
     return getRepository(this.entity).findOne({ where: whereClauses });
   }
 
-  private async createEntity(values: Partial<T> = {}): Promise<T> {
+  private async createEntity(values: Partial<T>): Promise<T> {
     const entity: T = new this.entity();
 
     await Promise.all(
       Object.entries(this).map(async ([key, value]) => {
-        const _value = values[key as keyof T] ? values[key as keyof T] : value;
+        const _value = Object.prototype.hasOwnProperty.call(values, key) ? values[key as keyof T] : value;
         const entityValue = await Factory.getEntityValue(_value);
         Object.assign(entity, { [key]: entityValue });
       }),
@@ -66,7 +65,7 @@ export abstract class Factory<T> {
 
   private static async getEntityValue(value: unknown) {
     if (value instanceof SubFactory) {
-      return value.factory.create();
+      return value.factory.create(value.values);
     } else if (value instanceof Sequence) {
       return value.nextValue;
     } else {
