@@ -61,7 +61,7 @@ After defining our factories, we can make use of them by creating a new instance
 const userFactory: NormalUserFactory = new NormalUserFactory();
 ```
 
-When creating the factory, we make user of the create function. By default, the entity created and saved to the database by using the properties defined on the factory.
+When creating the factory, we make user of the create function. By default, the entity is created and saved to the database by using the properties defined on the factory.
 
 ```typescript
 const user: User = await userFactory.create();
