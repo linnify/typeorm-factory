@@ -61,13 +61,13 @@ After defining our factories, we can make use of them by creating a new instance
 const userFactory: NormalUserFactory = new NormalUserFactory();
 ```
 
-When creating the factory, we make user of the create function. By default, the entity is created and saved to the database by using the properties defined on the factory.
+When creating the factory, we make use of the `create` function. By default, the entity is created and saved to the database by using the properties defined on the factory.
 
 ```typescript
 const user: User = await userFactory.create();
 ```
 
-If we want to modify the default attributes from the factory, we add them as parameter to the create function:
+If we want to modify the default attributes from the factory, we add them as parameter to the `create` function:
 
 
 ```typescript
@@ -80,7 +80,7 @@ We can create multiple instances by using the `createMany` function. In the belo
 const users: User[] = await userFactory.createMany(5)
 ```
 
-In the case when we have some unique attributes by which we define entities. We do not want to create multiple objects with some properties, we make use of the `getOrCreate` function. We define the attributes by which the entity should be unique. Calling the create method multiple times will return the same object.
+In the case when we have some unique attributes by which we define entities. We do not want to create multiple objects with some properties, we make use of the `getOrCreate` function. We define the attributes by which the entity should be unique. Calling the `create` method multiple times will return the same object.
 
 In our example, we do not want to create 2 users with the same email.
 
