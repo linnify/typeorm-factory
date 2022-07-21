@@ -19,7 +19,7 @@ describe('Test factories',() => {
       expect(company.website).toEqual('https://linnify.com')
       expect(company.numberOfEmployees).toEqual(40);
 
-      const databaseEntity = await getRepository(Company).findOne(company.id);
+      const databaseEntity = await getRepository(Company).findOne({where: { id: company.id }});
 
       expect(databaseEntity).not.toBeUndefined();
     })
@@ -34,7 +34,7 @@ describe('Test factories',() => {
       expect(company.website).toEqual('https://linnify.com')
       expect(company.numberOfEmployees).toEqual(NEW_EMPLOYEES_NUMBER);
 
-      const databaseEntity = await getRepository(Company).findOne(company.id);
+      const databaseEntity = await getRepository(Company).findOne({ where: { id: company.id }});
 
       expect(databaseEntity).not.toBeUndefined();
       expect(databaseEntity?.numberOfEmployees).toEqual(NEW_EMPLOYEES_NUMBER);
@@ -46,8 +46,8 @@ describe('Test factories',() => {
       expect(project.id).not.toBeUndefined();
       expect(project.company.id).not.toBeUndefined();
 
-      const relationEntity = await getRepository(Company).findOne(project.company.id);
-      const createdProject = await getRepository(Project).findOne(project.id, {relations: ['company']});
+      const relationEntity = await getRepository(Company).findOne({ where: { id: project.company.id }});
+      const createdProject = await getRepository(Project).findOne( { where: { id: project.id }, relations: ['company']});
 
       expect(createdProject?.company.id).toEqual(project.company.id);
       expect(relationEntity).not.toBeUndefined();
