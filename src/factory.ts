@@ -18,12 +18,12 @@ export abstract class Factory<T> {
     }
 
     const entity: T = await this.createEntity(values);
-    const savedEntity = getRepository(this.entity).save(entity);
+    const savedEntity = await getRepository(this.entity).save(entity);
 
     const storage = FactoryStorage.storage;
     const postGenerators = storage.getPostGenerators(this.constructor.name);
     if (postGenerators && postGenerators.length !== 0) {
-      await Promise.all(postGenerators.map(async (fnName: string) => (this as any)[fnName](entity)));
+      await Promise.all(postGenerators.map(async (fnName: string) => (this as any)[fnName](savedEntity)));
     }
 
     return savedEntity;
