@@ -1,10 +1,10 @@
-import { getRepository } from 'typeorm';
+import { getRepository, ObjectLiteral } from 'typeorm';
 import { SubFactory } from './subfactory';
 import { Constructable } from './types';
 import { Sequence } from './sequence';
 import { FactoryStorage } from './factory-storage';
 
-export abstract class Factory<T> {
+export abstract class Factory<T extends ObjectLiteral> {
   abstract get entity(): Constructable<T>;
 
   constructor() {}
@@ -18,12 +18,12 @@ export abstract class Factory<T> {
     }
 
     const entity: T = await this.createEntity(values);
-    const savedEntity = getRepository(this.entity).save(entity);
+    const savedEntity = await getRepository(this.entity).save(entity);
 
     const storage = FactoryStorage.storage;
     const postGenerators = storage.getPostGenerators(this.constructor.name);
     if (postGenerators && postGenerators.length !== 0) {
-      await Promise.all(postGenerators.map(async (fnName: string) => (this as any)[fnName](entity)));
+      await Promise.all(postGenerators.map(async (fnName: string) => (this as any)[fnName](savedEntity)));
     }
 
     return savedEntity;
@@ -40,7 +40,7 @@ export abstract class Factory<T> {
   }
 
   private async getExistingEntity(values: Partial<T>) {
-    const whereClauses: { [key: string]: any } = {};
+    const whereClauses: Record<string, any> = {};
 
     this.getOrCreate().forEach((key) => {
       whereClauses[key] = values[key as keyof T] ? values[key as keyof T] : (this as any)[key];
