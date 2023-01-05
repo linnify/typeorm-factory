@@ -1,7 +1,8 @@
 import { FactoryClass } from './types';
 import { Factory } from './factory';
+import { ObjectLiteral } from 'typeorm';
 
-export class SubFactory<T> {
+export class SubFactory<T extends ObjectLiteral> {
   factory: Factory<T>;
   values: Partial<T> | undefined;
 
